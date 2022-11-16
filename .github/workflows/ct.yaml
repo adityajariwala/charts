@@ -2,11 +2,7 @@ name: chart testing
 
 on:
   push:
-    types: [opened, synchronize, reopened]
 
-concurrency:
-  group: pr-${{ github.head_ref || github.run_id }}
-  cancel-in-progress: true
 
 jobs:
   lint:
