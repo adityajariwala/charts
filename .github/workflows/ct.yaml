@@ -21,8 +21,8 @@ jobs:
         with:
           python-version: 3.9
 
-      - name: Install yamllint
-        run: pip install yamllint
+      - name: Install chart-testing (ct) lint dependencies
+        run: pip install yamllint yamale
 
       - name: Lint charts
         run: make ct.lint
