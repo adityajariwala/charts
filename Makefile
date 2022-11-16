@@ -33,6 +33,8 @@ LOCAL_DIR   := $(REPO_ROOT)/.local
 HELM_DIR    := $(LOCAL_DIR)/.helm
 HACK_DIR    := $(REPO_ROOT)/hack
 
+LOCAL_BIN_DIR := $(LOCAL_DIR)/bin
+
 # ----------------------------------------------------------------------------------------------------------------------
 # Go configuration
 # ----------------------------------------------------------------------------------------------------------------------
@@ -117,6 +119,10 @@ COMMIT_MESSAGE   ?= $(shell git log -1 --no-show-signature --pretty=format:'%B')
 HELM_LINT        ?= true
 HELM_DEP_UPDATE  ?= true
 
+LINT_ENV := CT_CHART_DIRS="$(CT_CHART_DIRS)" \
+            CT_TARGET_BRANCH="$(CT_TARGET_BRANCH)" \
+            CT_SINCE="$(CT_SINCE)"
+
 PUBLISH_ENV := CI="$(CI)" \
 	DRY_RUN="$(DRY_RUN)" \
 	CT_CHART_DIRS="$(CT_CHART_DIRS)" \
@@ -153,11 +159,11 @@ publish: tools.install.helm tools.install.helm-ct ; $(info $(M) publishing chart
 
 .PHONY: ct.lint
 ct.lint: ## Run chart-testing (ct) linter against charts.
-ct.lint: tools.install.helm ; $(info $(M) running ct lint)
+ct.lint: tools.install.helm tools.install.yamllint ; $(info $(M) running ct lint)
 ifneq ($(CI),true)
 	git fetch $(GIT_REMOTE_NAME) master
 endif
-	ct lint --remote=$(GIT_REMOTE_NAME) --debug
+	$(LINT_ENV) ct lint --remote=$(GIT_REMOTE_NAME) --debug
 
 .PHONY: ct.test
 ct.test: ## Runs e2e tests for charts
@@ -189,6 +195,11 @@ endef
 tools.install: ## Install all tools
 tools.install: ; $(info $(M) installing all tools)
 	$(call install_tool,)
+
+.PHONY: tools.install.yamllint
+tools.install.yamllint: ## Install yamllint
+tools.install.yamllint: ; $(info $(M) installing yamllint)
+	pip3 install yamllint
 
 .PHONY: tools.install.%
 tools.install.%: ## Install specific tool
