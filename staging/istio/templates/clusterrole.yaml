@@ -1,8 +1,16 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  creationTimestamp: null
-  name: istio-operator{{- if not (eq .Values.revision "") }}-{{ .Values.revision }}{{- end }}
+    creationTimestamp: null
+
+    name: istio-operator{{- if not (eq .Values.revision "") }}-{{ .Values.revision }}{{- end }}
+
+
+
+
+
+
+
 rules:
 # istio groups
 - apiGroups:
