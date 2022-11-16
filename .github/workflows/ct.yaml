@@ -25,10 +25,7 @@ jobs:
         run: pip install yamllint yamale
 
       - name: Lint charts
-        run: |
-          make ct.lint
-          git diff --exit-code
-
+        run: make ct.lint
   test:
     runs-on: ubuntu-latest
     steps:
