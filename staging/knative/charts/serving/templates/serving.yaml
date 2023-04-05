@@ -968,9 +968,7 @@ metadata:
   name: activator
   namespace: knative-serving
   labels:
-    app.kubernetes.io/component: activator
-    app.kubernetes.io/name: knative-serving
-    app.kubernetes.io/version: devel
+    serving.knative.dev/release: {{ .Chart.AppVersion | quote }}
 spec:
   minReplicas: 1
   maxReplicas: 20
@@ -979,13 +977,11 @@ spec:
     kind: Deployment
     name: activator
   metrics:
-    - type: Resource
-      resource:
-        name: cpu
-        target:
-          type: Utilization
-          # Percentage of the requested CPU
-          averageUtilization: 100
+  - type: Resource
+    resource:
+      name: cpu
+      # Percentage of the requested CPU
+      targetAverageUtilization: 100
 
 ---
 # Copyright 2018 The Knative Authors
