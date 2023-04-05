@@ -246,10 +246,11 @@ metadata:
   name: config-br-default-channel
   namespace: knative-eventing
   labels:
-    eventing.knative.dev/release: {{ .Chart.AppVersion }}
+    app.kubernetes.io/version: devel
+    app.kubernetes.io/name: knative-eventing
 data:
   channelTemplateSpec: |
-    apiVersion: messaging.knative.dev/v1alpha1
+    apiVersion: messaging.knative.dev/v1
     kind: InMemoryChannel
 
 ---
@@ -305,16 +306,17 @@ metadata:
   name: default-ch-webhook
   namespace: knative-eventing
   labels:
-    eventing.knative.dev/release: {{ .Chart.AppVersion }}
+    app.kubernetes.io/version: devel
+    app.kubernetes.io/name: knative-eventing
 data:
   # Configuration for defaulting channels that do not specify CRD implementations.
   default-ch-config: |
     clusterDefault:
-      apiVersion: messaging.knative.dev/v1beta1
+      apiVersion: messaging.knative.dev/v1
       kind: InMemoryChannel
     namespaceDefaults:
       some-namespace:
-        apiVersion: messaging.knative.dev/v1beta1
+        apiVersion: messaging.knative.dev/v1
         kind: InMemoryChannel
 
 ---
@@ -1071,7 +1073,7 @@ spec:
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: apiextensions.k8s.io/v1beta1
+apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
@@ -1137,7 +1139,7 @@ spec:
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-apiVersion: apiextensions.k8s.io/v1beta1
+apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
@@ -1202,7 +1204,7 @@ spec:
   - name: v1alpha1
     served: true
     storage: true
-  - name: v1beta1
+  - name: v1
     served: true
     storage: false
 
@@ -1220,7 +1222,7 @@ spec:
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-apiVersion: apiextensions.k8s.io/v1beta1
+apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
@@ -1277,7 +1279,7 @@ spec:
   - name: v1alpha1
     served: true
     storage: true
-  - name: v1beta1
+  - name: v1
     served: true
     storage: false
 
@@ -1296,7 +1298,7 @@ spec:
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: apiextensions.k8s.io/v1beta1
+apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   labels:
@@ -1376,7 +1378,7 @@ spec:
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-apiVersion: apiextensions.k8s.io/v1beta1
+apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
@@ -1433,7 +1435,7 @@ spec:
   - name: v1alpha1
     served: true
     storage: true
-  - name: v1beta1
+  - name: v1
     served: true
     storage: false
 
@@ -1452,7 +1454,7 @@ spec:
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: apiextensions.k8s.io/v1beta1
+apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
@@ -1529,7 +1531,7 @@ spec:
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-apiVersion: apiextensions.k8s.io/v1beta1
+apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
@@ -1670,7 +1672,7 @@ spec:
   - name: v1alpha1
     served: true
     storage: true
-  - name: v1beta1
+  - name: v1
     served: true
     storage: false
 
@@ -1689,7 +1691,7 @@ spec:
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: apiextensions.k8s.io/v1beta1
+apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
@@ -1801,7 +1803,7 @@ spec:
           status:
             type: object
             x-kubernetes-preserve-unknown-fields: true
-  - name: v1beta1
+  - name: v1
     served: true
     storage: false
     schema:
@@ -2737,7 +2739,7 @@ metadata:
     eventing.knative.dev/release: {{ .Chart.AppVersion }}
 webhooks:
 - admissionReviewVersions:
-  - v1beta1
+  - v1
   clientConfig:
     service:
       name: eventing-webhook
@@ -2793,7 +2795,7 @@ metadata:
     eventing.knative.dev/release: {{ .Chart.AppVersion }}
 webhooks:
 - admissionReviewVersions:
-  - v1beta1
+  - v1
   clientConfig:
     service:
       name: eventing-webhook
@@ -2910,7 +2912,7 @@ rules:
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: apiextensions.k8s.io/v1beta1
+apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
@@ -4027,7 +4029,7 @@ roleRef:
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-apiVersion: apiextensions.k8s.io/v1beta1
+apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
@@ -4087,7 +4089,7 @@ spec:
   - name: v1alpha1
     served: true
     storage: true
-  - name: v1beta1
+  - name: v1
     served: true
     storage: false
 
