@@ -89,7 +89,7 @@ roleRef:
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: caching.internal.knative.dev/v1
+apiVersion: caching.internal.knative.dev/v1alpha1
 kind: Image
 metadata:
   name: queue-proxy
@@ -1935,7 +1935,7 @@ spec:
 apiVersion: apiregistration.k8s.io/v1
 kind: APIService
 metadata:
-  name: v1beta1.custom.metrics.k8s.io
+  name: v1.custom.metrics.k8s.io
   labels:
     serving.knative.dev/release: {{ .Chart.AppVersion | quote }}
     autoscaling.knative.dev/metric-provider: custom-metrics
@@ -1944,7 +1944,7 @@ spec:
     name: autoscaler
     namespace: knative-serving
   group: custom.metrics.k8s.io
-  version: v1beta1
+  version: v1
   insecureSkipTLSVerify: true
   groupPriorityMinimum: 100
   versionPriority: 100
@@ -2066,7 +2066,7 @@ spec:
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: admissionregistration.k8s.io/v1beta1
+apiVersion: admissionregistration.k8s.io/v1
 kind: MutatingWebhookConfiguration
 metadata:
   name: webhook.istio.networking.internal.knative.dev
@@ -2074,7 +2074,7 @@ metadata:
     serving.knative.dev/release: "v20200411-5be0174"
 webhooks:
 - admissionReviewVersions:
-  - v1beta1
+  - v1
   clientConfig:
     service:
       name: istio-webhook
@@ -2101,7 +2101,7 @@ webhooks:
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: admissionregistration.k8s.io/v1beta1
+apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
 metadata:
   name: config.webhook.istio.networking.internal.knative.dev
@@ -2109,7 +2109,7 @@ metadata:
     serving.knative.dev/release: "v20200411-5be0174"
 webhooks:
 - admissionReviewVersions:
-  - v1beta1
+  - v1
   clientConfig:
     service:
       name: istio-webhook
