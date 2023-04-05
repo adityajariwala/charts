@@ -2665,27 +2665,23 @@ rules:
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: admissionregistration.k8s.io/v1beta1
+apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
 metadata:
-  name: config.webhook.eventing.knative.dev
+  name: validation.webhook.eventing.knative.dev
   labels:
-    eventing.knative.dev/release: {{ .Chart.AppVersion }}
+    app.kubernetes.io/version: devel
+    app.kubernetes.io/name: knative-eventing
 webhooks:
-- admissionReviewVersions:
-  - v1beta1
-  clientConfig:
-    service:
-      name: eventing-webhook
-      namespace: knative-eventing
-  sideEffects: None
-  failurePolicy: Fail
-  name: config.webhook.eventing.knative.dev
-  namespaceSelector:
-    matchExpressions:
-    - key: eventing.knative.dev/release
-      operator: Exists
-
+  - admissionReviewVersions: ["v1", "v1beta1"]
+    clientConfig:
+      service:
+        name: eventing-webhook
+        namespace: knative-eventing
+    sideEffects: None
+    failurePolicy: Fail
+    name: validation.webhook.eventing.knative.dev
+    timeoutSeconds: 10
 ---
 # Copyright 2018 The Knative Authors
 #
@@ -2701,23 +2697,23 @@ webhooks:
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: admissionregistration.k8s.io/v1beta1
+apiVersion: admissionregistration.k8s.io/v1
 kind: MutatingWebhookConfiguration
 metadata:
-  name: webhook.eventing.knative.dev
+  name: mutating.webhook.eventing.knative.dev
   labels:
-    eventing.knative.dev/release: {{ .Chart.AppVersion }}
+    app.kubernetes.io/version: devel
+    app.kubernetes.io/name: knative-eventing
 webhooks:
-- admissionReviewVersions:
-  - v1beta1
-  clientConfig:
-    service:
-      name: eventing-webhook
-      namespace: knative-eventing
-  sideEffects: None
-  failurePolicy: Fail
-  name: webhook.eventing.knative.dev
-
+  - admissionReviewVersions: ["v1", "v1beta1"]
+    clientConfig:
+      service:
+        name: eventing-webhook
+        namespace: knative-eventing
+    sideEffects: None
+    failurePolicy: Fail
+    name: mutating.webhook.eventing.knative.dev
+    timeoutSeconds: 10
 ---
 # Copyright 2018 The Knative Authors
 #
@@ -3576,41 +3572,48 @@ kind: HorizontalPodAutoscaler
 metadata:
   name: broker-ingress-hpa
   namespace: knative-eventing
+  labels:
+    app.kubernetes.io/component: broker-ingress
+    app.kubernetes.io/version: devel
+    app.kubernetes.io/name: knative-eventing
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: broker-ingress
+    name: mt-broker-ingress
   minReplicas: 1
   maxReplicas: 10
   metrics:
-  - type: Resource
-    resource:
-      name: cpu
-      target:
-        type: Utilization
-        averageUtilization: 70
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
 ---
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: broker-filter-hpa
   namespace: knative-eventing
+  labels:
+    app.kubernetes.io/component: broker-filter
+    app.kubernetes.io/version: devel
+    app.kubernetes.io/name: knative-eventing
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: broker-filter
+    name: mt-broker-filter
   minReplicas: 1
   maxReplicas: 10
   metrics:
-  - type: Resource
-    resource:
-      name: cpu
-      target:
-        type: Utilization
-        averageUtilization: 70
-
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
 ---
 # in-memory-channel.yaml
 # Copyright 2020 The Knative Authors
