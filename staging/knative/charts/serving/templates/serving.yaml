@@ -962,13 +962,15 @@ data:
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: autoscaling/v2beta1
+apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: activator
   namespace: knative-serving
   labels:
-    serving.knative.dev/release: {{ .Chart.AppVersion | quote }}
+    app.kubernetes.io/component: activator
+    app.kubernetes.io/name: knative-serving
+    app.kubernetes.io/version: devel
 spec:
   minReplicas: 1
   maxReplicas: 20
@@ -977,11 +979,13 @@ spec:
     kind: Deployment
     name: activator
   metrics:
-  - type: Resource
-    resource:
-      name: cpu
-      # Percentage of the requested CPU
-      targetAverageUtilization: 100
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          # Percentage of the requested CPU
+          averageUtilization: 100
 
 ---
 # Copyright 2018 The Knative Authors
