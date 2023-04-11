@@ -1,7 +1,0 @@
-apiVersion: v2
-name: knative-operator
-description: "A Helm chart for Kubernetes"
-type: application
-version: 0.1.0
-icon: https://raw.githubusercontent.com/knative/docs/master/docs/images/logo/rgb/knative-logo-rgb.jpg
-appVersion: "0.1.0"
