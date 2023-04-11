@@ -2681,18 +2681,6 @@ entries:
     urls:
     - https://mesosphere.github.io/charts/staging/karma-1.1.21.tgz
     version: 1.1.21
-  knative-operator:
-  - apiVersion: v2
-    appVersion: 0.1.0
-    created: "2023-04-11T13:26:39.899496-05:00"
-    description: A Helm chart for Kubernetes
-    digest: 5f9e2a90986c4ff4842c08f11374584bb2db362216647a5dddb3ea5a4a26162a
-    icon: https://raw.githubusercontent.com/knative/docs/master/docs/images/logo/rgb/knative-logo-rgb.jpg
-    name: knative-operator
-    type: application
-    urls:
-      - https://adityajariwala.github.io/charts/staging/knative-operator-0.1.0.tgz
-    version: 0.1.0
   knative:
   - apiVersion: v2
     appVersion: v1.10.0
@@ -2863,7 +2851,7 @@ entries:
     version: 0.6.0
   - apiVersion: v2
     appVersion: v0.22.3
-    created: "2023-04-11T12:43:01.398231-05:00"
+    created: "2023-04-11T15:22:52.803469-05:00"
     dependencies:
       - condition: eventing.enabled
         name: eventing
@@ -2876,19 +2864,18 @@ entries:
       - condition: serving.enabled
         name: serving
         repository: ""
-        version: 0.4.2
+        version: 0.3.4
     description: Kubernetes-based platform to build, deploy, and manage modern serverless
       workloads
-    digest: 033b5ec9f8ae9102a2e82973b869405ce0d3f37c176ecb763a3abbee7fc5984f
+    digest: 946d8194c84e4d3b0efbd4bec9ed56141d8e8daa478f174e88463f91102d816e
     home: https://knative.dev/
     icon: https://raw.githubusercontent.com/knative/docs/master/docs/images/logo/rgb/knative-logo-rgb.jpg
     maintainers:
-      - name: chhsia0
-      - name: gilbert88
+      - name: akirillov
     name: knative
     urls:
-      - https://adityajariwala.github.io/charts/staging/knative-0.5.2.tgz
-    version: 0.5.2
+      - https://adityajariwala.github.io/charts/staging/knative-0.5.3.tgz
+    version: 0.5.3
   - apiVersion: v2
     appVersion: v0.22.3
     created: "2023-03-27T17:45:53.661136163Z"

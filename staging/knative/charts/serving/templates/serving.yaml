@@ -2010,7 +2010,6 @@ spec:
     app: autoscaler-hpa
 
 ---
-{{- if .Values.customMetricsApiservice.enabled }}
 # Copyright 2019 The Knative Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -2041,7 +2040,6 @@ spec:
   insecureSkipTLSVerify: true
   groupPriorityMinimum: 100
   versionPriority: 100
-{{- end }}
 
 ---
 # Copyright 2019 The Knative Authors
