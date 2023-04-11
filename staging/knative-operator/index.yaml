@@ -3,13 +3,13 @@ entries:
   knative-operator:
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2023-04-11T11:06:47.771031-05:00"
+    created: "2023-04-11T11:10:31.92215-05:00"
     description: A Helm chart for Kubernetes
-    digest: cd3322a69901f3490830521e3658206f074a353127f38c8677c8c6110c2fe74a
+    digest: 6082a2d2bfaea47ed815894d36b75f000d153004335f54b5b09458044e517347
     icon: https://raw.githubusercontent.com/knative/docs/master/docs/images/logo/rgb/knative-logo-rgb.jpg
     name: knative-operator
     type: application
     urls:
     - https://adityajariwala.github.io/charts/staging/knative-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2023-04-11T11:06:47.767471-05:00"
+generated: "2023-04-11T11:10:31.920062-05:00"
