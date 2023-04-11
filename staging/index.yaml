@@ -2856,7 +2856,7 @@ entries:
       - condition: eventing.enabled
         name: eventing
         repository: ""
-        version: 0.2.0
+        version: 0.2.1
       - condition: eventing-sources.enabled
         name: eventing-sources
         repository: ""
@@ -2864,7 +2864,7 @@ entries:
       - condition: serving.enabled
         name: serving
         repository: ""
-        version: 0.3.4
+        version: 0.4.3
     description: Kubernetes-based platform to build, deploy, and manage modern serverless
       workloads
     digest: 946d8194c84e4d3b0efbd4bec9ed56141d8e8daa478f174e88463f91102d816e
