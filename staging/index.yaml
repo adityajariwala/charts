@@ -2681,7 +2681,7 @@ entries:
     urls:
     - https://mesosphere.github.io/charts/staging/karma-1.1.21.tgz
     version: 1.1.21
-  knative:
+  knative-operator:
   - apiVersion: v2
     appVersion: v1.10.0
     created: "2023-06-16T17:21:31.255323021Z"
@@ -2874,8 +2874,9 @@ entries:
       - name: akirillov
     name: knative
     urls:
-      - https://adityajariwala.github.io/charts/staging/knative-1.9.3.tgz
-    version: 1.9.3
+      - https://adityajariwala.github.io/charts/staging/knative-operator-0.1.0.tgz
+    version: 0.1.0
+  knative:
   - apiVersion: v2
     appVersion: v0.22.3
     created: "2023-03-27T17:45:53.661136163Z"
