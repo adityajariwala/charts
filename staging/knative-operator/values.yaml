@@ -114,7 +114,7 @@ knativeOperator:
       metricsDomain: knative.dev/operator
     image:
       repository: gcr.io/knative-releases/knative.dev/operator/cmd/operator@sha256
-      tag: 04248e8f41dd63c966529aef71f92a7c20be3ecbb6a95abec4afb8f06e6093df
+      tag: 2e73ab904a74aa6c6ed1b8fe6f46d14444918bf486ab5bb0febdb2fbc77aa033
     imagePullPolicy: IfNotPresent
   replicas: 1
 kubernetesClusterDomain: cluster.local
@@ -135,7 +135,7 @@ operatorWebhook:
       webhookPort: "8443"
     image:
       repository: gcr.io/knative-releases/knative.dev/operator/cmd/webhook@sha256
-      tag: c7d040c90b7abd33387d57e75bd9df1da4cccfb4706030554833a930c0e84c9a
+      tag: 3d827626e563b24b8c001424d48bf8f07725223a07d0478148f3c021b4e9e647
     resources:
       limits:
         cpu: 500m

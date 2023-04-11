@@ -4,7 +4,7 @@ metadata:
   name: {{ include "knative-operator.fullname" . }}-operator-webhook
   labels:
     app.kubernetes.io/component: operator-webhook
-    operator.knative.dev/release: v1.9.3
+    operator.knative.dev/release: v1.9.4
   {{- include "knative-operator.labels" . | nindent 4 }}
 spec:
   selector:
@@ -18,8 +18,8 @@ spec:
         app: operator-webhook
         app.kubernetes.io/component: operator-webhook
         app.kubernetes.io/name: knative-operator
-        app.kubernetes.io/version: 1.9.3
-        operator.knative.dev/release: v1.9.3
+        app.kubernetes.io/version: 1.9.4
+        operator.knative.dev/release: v1.9.4
         role: operator-webhook
       {{- include "knative-operator.selectorLabels" . | nindent 8 }}
       annotations:
@@ -100,7 +100,7 @@ metadata:
   name: {{ include "knative-operator.fullname" . }}-knative-operator
   labels:
     app.kubernetes.io/part-of: knative-operator
-    operator.knative.dev/release: v1.9.3
+    operator.knative.dev/release: v1.9.4
   {{- include "knative-operator.labels" . | nindent 4 }}
 ---
 apiVersion: v1
@@ -109,7 +109,7 @@ metadata:
   name: {{ include "knative-operator.fullname" . }}-operator-webhook
   labels:
     app.kubernetes.io/part-of: knative-operator
-    operator.knative.dev/release: v1.9.3
+    operator.knative.dev/release: v1.9.4
   {{- include "knative-operator.labels" . | nindent 4 }}
 ---
 apiVersion: apps/v1
@@ -118,7 +118,7 @@ metadata:
   name: {{ include "knative-operator.fullname" . }}-knative-operator
   labels:
     app.kubernetes.io/part-of: knative-operator
-    operator.knative.dev/release: v1.9.3
+    operator.knative.dev/release: v1.9.4
   {{- include "knative-operator.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.knativeOperator.replicas }}
@@ -131,7 +131,7 @@ spec:
       labels:
         app.kubernetes.io/name: knative-operator
         app.kubernetes.io/part-of: knative-operator
-        app.kubernetes.io/version: 1.9.3
+        app.kubernetes.io/version: 1.9.4
         name: knative-operator
       {{- include "knative-operator.selectorLabels" . | nindent 8 }}
       annotations:
