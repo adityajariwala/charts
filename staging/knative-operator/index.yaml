@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  knative-operator:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2023-04-11T10:34:08.974408-05:00"
+    description: A Helm chart for Kubernetes
+    digest: 82d815f5b645ce4ca019ba035d6e5554590ec954c9fc3f00345c7ec6af53e1f9
+    name: knative-operator
+    type: application
+    urls:
+    - https://adityajariwala.github.io/charts/staging/knative-operator-0.1.0.tgz
+    version: 0.1.0
+generated: "2023-04-11T10:34:08.971409-05:00"
