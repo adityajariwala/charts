@@ -2681,6 +2681,18 @@ entries:
     urls:
     - https://mesosphere.github.io/charts/staging/karma-1.1.21.tgz
     version: 1.1.21
+  knative-operator:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2023-04-11T13:26:39.899496-05:00"
+    description: A Helm chart for Kubernetes
+    digest: 5f9e2a90986c4ff4842c08f11374584bb2db362216647a5dddb3ea5a4a26162a
+    icon: https://raw.githubusercontent.com/knative/docs/master/docs/images/logo/rgb/knative-logo-rgb.jpg
+    name: knative-operator
+    type: application
+    urls:
+      - https://adityajariwala.github.io/charts/staging/knative-operator-0.1.0.tgz
+    version: 0.1.0
   knative:
   - apiVersion: v2
     appVersion: v1.10.0
