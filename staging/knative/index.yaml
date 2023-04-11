@@ -3,29 +3,30 @@ entries:
   knative:
   - apiVersion: v2
     appVersion: v0.22.3
-    created: "2023-04-05T15:27:50.516834-05:00"
+    created: "2023-04-11T12:43:01.398231-05:00"
     dependencies:
-    - condition: eventing.enabled
-      name: eventing
-      repository: ""
-      version: 0.2.0
-    - condition: eventing-sources.enabled
-      name: eventing-sources
-      repository: ""
-      version: 0.2.0
-    - condition: serving.enabled
-      name: serving
-      repository: ""
-      version: 0.4.2
+      - condition: eventing.enabled
+        name: eventing
+        repository: ""
+        version: 0.2.0
+      - condition: eventing-sources.enabled
+        name: eventing-sources
+        repository: ""
+        version: 0.2.0
+      - condition: serving.enabled
+        name: serving
+        repository: ""
+        version: 0.4.2
     description: Kubernetes-based platform to build, deploy, and manage modern serverless
       workloads
-    digest: 0dda1b22bf51af7b9fb52549caa2add7771a4b9ee86dc59958cf644c75f3db89
+    digest: 033b5ec9f8ae9102a2e82973b869405ce0d3f37c176ecb763a3abbee7fc5984f
     home: https://knative.dev/
     icon: https://raw.githubusercontent.com/knative/docs/master/docs/images/logo/rgb/knative-logo-rgb.jpg
     maintainers:
-    - name: akirillov
+      - name: chhsia0
+      - name: gilbert88
     name: knative
     urls:
-    - https://adityajariwala.github.io/charts/staging/knative-1.9.3.tgz
-    version: 1.9.3
-generated: "2023-04-05T15:27:50.510709-05:00"
+      - https://adityajariwala.github.io/charts/staging/knative-0.5.2.tgz
+    version: 0.5.2
+generated: "2023-04-11T12:43:01.391769-05:00"
