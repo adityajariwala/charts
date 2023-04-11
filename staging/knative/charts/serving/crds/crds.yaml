@@ -1,5 +1,5 @@
 ---
-apiVersion: apiextensions.k8s.io/v1beta1
+apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: images.caching.internal.knative.dev
@@ -7,7 +7,10 @@ metadata:
     knative.dev/crd-install: "true"
 spec:
   group: caching.internal.knative.dev
-  version: v1alpha1
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: false
   names:
     kind: Image
     plural: images
@@ -18,11 +21,9 @@ spec:
     shortNames:
       - img
   scope: Namespaced
-  subresources:
-    status: {}
 
 ---
-apiVersion: apiextensions.k8s.io/v1beta1
+apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: certificates.networking.internal.knative.dev
@@ -30,7 +31,10 @@ metadata:
     knative.dev/crd-install: "true"
 spec:
   group: networking.internal.knative.dev
-  version: v1alpha1
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: false
   names:
     kind: Certificate
     plural: certificates
@@ -41,18 +45,9 @@ spec:
     shortNames:
       - kcert
   scope: Namespaced
-  subresources:
-    status: {}
-  additionalPrinterColumns:
-    - name: Ready
-      type: string
-      JSONPath: ".status.conditions[?(@.type==\"Ready\")].status"
-    - name: Reason
-      type: string
-      JSONPath: ".status.conditions[?(@.type==\"Ready\")].reason"
 
 ---
-apiVersion: apiextensions.k8s.io/v1beta1
+apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: configurations.serving.knative.dev
@@ -62,14 +57,6 @@ metadata:
 spec:
   group: serving.knative.dev
   preserveUnknownFields: false
-  validation:
-    openAPIV3Schema:
-      type: object
-      # this is a work around so we don't need to flush out the
-      # schema for each version at this time
-      #
-      # see issue: https://github.com/knative/serving/issues/912
-      x-kubernetes-preserve-unknown-fields: true
   versions:
     - name: v1alpha1
       served: true
@@ -92,30 +79,11 @@ spec:
       - config
       - cfg
   scope: Namespaced
-  subresources:
-    status: {}
   conversion:
     strategy: Webhook
-    webhookClientConfig:
-      service:
-        name: webhook
-        namespace: knative-serving
-  additionalPrinterColumns:
-    - name: LatestCreated
-      type: string
-      JSONPath: .status.latestCreatedRevisionName
-    - name: LatestReady
-      type: string
-      JSONPath: .status.latestReadyRevisionName
-    - name: Ready
-      type: string
-      JSONPath: ".status.conditions[?(@.type=='Ready')].status"
-    - name: Reason
-      type: string
-      JSONPath: ".status.conditions[?(@.type=='Ready')].reason"
 
 ---
-apiVersion: apiextensions.k8s.io/v1beta1
+apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: ingresses.networking.internal.knative.dev
@@ -138,18 +106,9 @@ spec:
       - kingress
       - king
   scope: Namespaced
-  subresources:
-    status: {}
-  additionalPrinterColumns:
-    - name: Ready
-      type: string
-      JSONPath: ".status.conditions[?(@.type=='Ready')].status"
-    - name: Reason
-      type: string
-      JSONPath: ".status.conditions[?(@.type=='Ready')].reason"
 
 ---
-apiVersion: apiextensions.k8s.io/v1beta1
+apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: metrics.autoscaling.internal.knative.dev
@@ -157,7 +116,10 @@ metadata:
     knative.dev/crd-install: "true"
 spec:
   group: autoscaling.internal.knative.dev
-  version: v1alpha1
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
   names:
     kind: Metric
     plural: metrics
@@ -166,18 +128,9 @@ spec:
       - knative-internal
       - autoscaling
   scope: Namespaced
-  subresources:
-    status: {}
-  additionalPrinterColumns:
-    - name: Ready
-      type: string
-      JSONPath: ".status.conditions[?(@.type=='Ready')].status"
-    - name: Reason
-      type: string
-      JSONPath: ".status.conditions[?(@.type=='Ready')].reason"
 
 ---
-apiVersion: apiextensions.k8s.io/v1beta1
+apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: podautoscalers.autoscaling.internal.knative.dev
@@ -200,24 +153,9 @@ spec:
       - kpa
       - pa
   scope: Namespaced
-  subresources:
-    status: {}
-  additionalPrinterColumns:
-    - name: DesiredScale
-      type: integer
-      JSONPath: ".status.desiredScale"
-    - name: ActualScale
-      type: integer
-      JSONPath: ".status.actualScale"
-    - name: Ready
-      type: string
-      JSONPath: ".status.conditions[?(@.type=='Ready')].status"
-    - name: Reason
-      type: string
-      JSONPath: ".status.conditions[?(@.type=='Ready')].reason"
 
 ---
-apiVersion: apiextensions.k8s.io/v1beta1
+apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: revisions.serving.knative.dev
@@ -226,14 +164,6 @@ metadata:
 spec:
   group: serving.knative.dev
   preserveUnknownFields: false
-  validation:
-    openAPIV3Schema:
-      type: object
-      # this is a work around so we don't need to flush out the
-      # schema for each version at this time
-      #
-      # see issue: https://github.com/knative/serving/issues/912
-      x-kubernetes-preserve-unknown-fields: true
   versions:
     - name: v1alpha1
       served: true
@@ -255,33 +185,11 @@ spec:
     shortNames:
       - rev
   scope: Namespaced
-  subresources:
-    status: {}
   conversion:
     strategy: Webhook
-    webhookClientConfig:
-      service:
-        name: webhook
-        namespace: knative-serving
-  additionalPrinterColumns:
-    - name: Config Name
-      type: string
-      JSONPath: ".metadata.labels['serving\\.knative\\.dev/configuration']"
-    - name: K8s Service Name
-      type: string
-      JSONPath: ".status.serviceName"
-    - name: Generation
-      type: string # int in string form :(
-      JSONPath: ".metadata.labels['serving\\.knative\\.dev/configurationGeneration']"
-    - name: Ready
-      type: string
-      JSONPath: ".status.conditions[?(@.type=='Ready')].status"
-    - name: Reason
-      type: string
-      JSONPath: ".status.conditions[?(@.type=='Ready')].reason"
 
 ---
-apiVersion: apiextensions.k8s.io/v1beta1
+apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: routes.serving.knative.dev
@@ -291,14 +199,6 @@ metadata:
 spec:
   group: serving.knative.dev
   preserveUnknownFields: false
-  validation:
-    openAPIV3Schema:
-      type: object
-      # this is a work around so we don't need to flush out the
-      # schema for each version at this time
-      #
-      # see issue: https://github.com/knative/serving/issues/912
-      x-kubernetes-preserve-unknown-fields: true
   versions:
     - name: v1alpha1
       served: true
@@ -320,27 +220,11 @@ spec:
     shortNames:
       - rt
   scope: Namespaced
-  subresources:
-    status: {}
   conversion:
     strategy: Webhook
-    webhookClientConfig:
-      service:
-        name: webhook
-        namespace: knative-serving
-  additionalPrinterColumns:
-    - name: URL
-      type: string
-      JSONPath: .status.url
-    - name: Ready
-      type: string
-      JSONPath: ".status.conditions[?(@.type=='Ready')].status"
-    - name: Reason
-      type: string
-      JSONPath: ".status.conditions[?(@.type=='Ready')].reason"
 
 ---
-apiVersion: apiextensions.k8s.io/v1beta1
+apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: serverlessservices.networking.internal.knative.dev
@@ -362,30 +246,9 @@ spec:
     shortNames:
       - sks
   scope: Namespaced
-  subresources:
-    status: {}
-  additionalPrinterColumns:
-    - name: Mode
-      type: string
-      JSONPath: ".spec.mode"
-    - name: Activators
-      type: integer
-      JSONPath: ".spec.numActivators"
-    - name: ServiceName
-      type: string
-      JSONPath: ".status.serviceName"
-    - name: PrivateServiceName
-      type: string
-      JSONPath: ".status.privateServiceName"
-    - name: Ready
-      type: string
-      JSONPath: ".status.conditions[?(@.type=='Ready')].status"
-    - name: Reason
-      type: string
-      JSONPath: ".status.conditions[?(@.type=='Ready')].reason"
 
 ---
-apiVersion: apiextensions.k8s.io/v1beta1
+apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: services.serving.knative.dev
@@ -396,14 +259,6 @@ metadata:
 spec:
   group: serving.knative.dev
   preserveUnknownFields: false
-  validation:
-    openAPIV3Schema:
-      type: object
-      # this is a work around so we don't need to flush out the
-      # schema for each version at this time
-      #
-      # see issue: https://github.com/knative/serving/issues/912
-      x-kubernetes-preserve-unknown-fields: true
   versions:
     - name: v1alpha1
       served: true
@@ -426,27 +281,5 @@ spec:
       - kservice
       - ksvc
   scope: Namespaced
-  subresources:
-    status: {}
   conversion:
     strategy: Webhook
-    webhookClientConfig:
-      service:
-        name: webhook
-        namespace: knative-serving
-  additionalPrinterColumns:
-    - name: URL
-      type: string
-      JSONPath: .status.url
-    - name: LatestCreated
-      type: string
-      JSONPath: .status.latestCreatedRevisionName
-    - name: LatestReady
-      type: string
-      JSONPath: .status.latestReadyRevisionName
-    - name: Ready
-      type: string
-      JSONPath: ".status.conditions[?(@.type=='Ready')].status"
-    - name: Reason
-      type: string
-      JSONPath: ".status.conditions[?(@.type=='Ready')].reason"
