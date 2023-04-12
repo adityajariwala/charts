@@ -24,7 +24,6 @@ spec:
       labels:
         app: activator
         app.kubernetes.io/component: activator
-        app.kubernetes.io/name: knative-serving
         app.kubernetes.io/version: 1.9.3
         role: activator
       {{- include "knative-serving.selectorLabels" . | nindent 8 }}
@@ -108,7 +107,6 @@ spec:
       labels:
         app: autoscaler
         app.kubernetes.io/component: autoscaler
-        app.kubernetes.io/name: knative-serving
         app.kubernetes.io/version: 1.9.3
       {{- include "knative-serving.selectorLabels" . | nindent 8 }}
       annotations:
@@ -190,7 +188,6 @@ spec:
       labels:
         app: controller
         app.kubernetes.io/component: controller
-        app.kubernetes.io/name: knative-serving
         app.kubernetes.io/version: 1.9.3
       {{- include "knative-serving.selectorLabels" . | nindent 8 }}
       annotations:
@@ -253,7 +250,6 @@ spec:
       labels:
         app: domain-mapping
         app.kubernetes.io/component: domain-mapping
-        app.kubernetes.io/name: knative-serving
         app.kubernetes.io/version: 1.9.3
       {{- include "knative-serving.selectorLabels" . | nindent 8 }}
       annotations:
@@ -315,7 +311,6 @@ spec:
       labels:
         app: domainmapping-webhook
         app.kubernetes.io/component: domain-mapping
-        app.kubernetes.io/name: knative-serving
         app.kubernetes.io/version: 1.9.3
         role: domainmapping-webhook
       {{- include "knative-serving.selectorLabels" . | nindent 8 }}
@@ -409,7 +404,6 @@ spec:
       labels:
         app: webhook
         app.kubernetes.io/component: webhook
-        app.kubernetes.io/name: knative-serving
         app.kubernetes.io/version: 1.9.3
         role: webhook
       {{- include "knative-serving.selectorLabels" . | nindent 8 }}
@@ -499,7 +493,6 @@ spec:
       labels:
         app: autoscaler-hpa
         app.kubernetes.io/component: autoscaler-hpa
-        app.kubernetes.io/name: knative-serving
         app.kubernetes.io/version: 1.9.3
       {{- include "knative-serving.selectorLabels" . | nindent 8 }}
       annotations:
