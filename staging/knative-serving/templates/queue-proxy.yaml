@@ -6,4 +6,4 @@ metadata:
     app.kubernetes.io/component: queue-proxy
   {{- include "knative-serving.labels" . | nindent 4 }}
 spec:
-  image: gcr.io/knative-releases/knative.dev/serving/cmd/queue@sha256:319715ba3361ae104beb7dcdcb7447451ee058b2ffc855ee99373e20417a477d
+  image: {{ .Values.queue.queue.image.repository }}:{{ .Values.queue.queue.image.tag }}

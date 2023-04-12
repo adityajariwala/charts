@@ -15,8 +15,8 @@ activator:
       gogc: "500"
       metricsDomain: knative.dev/internal/serving
     image:
-      repository: gcr.io/knative-releases/knative.dev/serving/cmd/activator@sha256
-      tag: 99d54525a3184362f746109b01275a01bfa48eb833ab4ae1b647b5bb142506ba
+      repository: gcr.io/knative-releases/knative.dev/serving/cmd/activator
+      tag: eebd9aa725b7
     resources:
       limits:
         cpu: "1"
@@ -58,8 +58,8 @@ autoscaler:
       configObservabilityName: config-observability
       metricsDomain: knative.dev/serving
     image:
-      repository: gcr.io/knative-releases/knative.dev/serving/cmd/autoscaler@sha256
-      tag: 38b60f52ddd52234f22d742c1853dcfbc50fb72f7a1c8a1734909790fcebfa96
+      repository: gcr.io/knative-releases/knative.dev/serving/cmd/autoscaler
+      tag: 07920fd1f08b
     resources:
       limits:
         cpu: "1"
@@ -95,8 +95,8 @@ autoscalerHpa:
       configObservabilityName: config-observability
       metricsDomain: knative.dev/serving
     image:
-      repository: gcr.io/knative-releases/knative.dev/serving/cmd/autoscaler-hpa@sha256
-      tag: 1d019396ba932740e377161fdec20b4023a5a05c96780c85a33b6fd1e5f9cffb
+      repository: gcr.io/knative-releases/knative.dev/serving/cmd/autoscaler-hpa
+      tag: 74a89c301fd0
     resources:
       limits:
         cpu: 300m
@@ -458,7 +458,7 @@ configDeployment:
     #
     # NOTE THAT THIS IS AN EXPERIMENTAL / ALPHA FEATURE
     concurrency-state-endpoint: ""
-  queueSidecarImage: gcr.io/knative-releases/knative.dev/serving/cmd/queue@sha256:319715ba3361ae104beb7dcdcb7447451ee058b2ffc855ee99373e20417a477d
+  queueSidecarImage: gcr.io/knative-releases/knative.dev/serving/cmd/queue:146f63f1dc0a
 configDomain:
   Example: |-
     ################################
@@ -1054,8 +1054,8 @@ controller:
       configObservabilityName: config-observability
       metricsDomain: knative.dev/internal/serving
     image:
-      repository: gcr.io/knative-releases/knative.dev/serving/cmd/controller@sha256
-      tag: 9652c4b3d7b1d41beed1ba45a62bd84bd230f612da80d5d79bb868000a91baaf
+      repository: gcr.io/knative-releases/knative.dev/serving/cmd/controller
+      tag: d3217b10c399
     resources:
       limits:
         cpu: "1"
@@ -1087,8 +1087,8 @@ domainMapping:
       configObservabilityName: config-observability
       metricsDomain: knative.dev/serving
     image:
-      repository: gcr.io/knative-releases/knative.dev/serving/cmd/domain-mapping@sha256
-      tag: 7e4a15d0aeade8b84d337ed92ebdda97b07a475b5c91727e9a34f1478c8ba8ec
+      repository: gcr.io/knative-releases/knative.dev/serving/cmd/domain-mapping
+      tag: e0461362a2f2
     resources:
       limits:
         cpu: 300m
@@ -1113,8 +1113,8 @@ domainmappingWebhook:
       metricsDomain: knative.dev/serving
       webhookPort: "8443"
     image:
-      repository: gcr.io/knative-releases/knative.dev/serving/cmd/domain-mapping-webhook@sha256
-      tag: 1c3a6c87563ead6fcba1692a2bff55b43dae86041ed0c0e701324bfb884030ec
+      repository: gcr.io/knative-releases/knative.dev/serving/cmd/domain-mapping-webhook
+      tag: e08873de6397
     resources:
       limits:
         cpu: 500m
@@ -1163,8 +1163,8 @@ webhook:
       webhookName: webhook
       webhookPort: "8443"
     image:
-      repository: gcr.io/knative-releases/knative.dev/serving/cmd/webhook@sha256
-      tag: a8fd84ff44c3296020aaaf7306e2b45f231a6a2d5a4566cafaf601c968c8754b
+      repository: gcr.io/knative-releases/knative.dev/serving/cmd/webhook
+      tag: 04a65ceb9f84
     resources:
       limits:
         cpu: 500m
@@ -1172,3 +1172,8 @@ webhook:
       requests:
         cpu: 100m
         memory: 100Mi
+queue:
+  queue:
+    image:
+      repository: gcr.io/knative-releases/knative.dev/serving/cmd/queue
+      tag: 146f63f1dc0a
