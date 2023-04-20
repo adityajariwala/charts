@@ -2681,23 +2681,35 @@ entries:
     urls:
     - https://mesosphere.github.io/charts/staging/karma-1.1.21.tgz
     version: 1.1.21
-  knative-serving:
+  knative:
   - apiVersion: v2
-    appVersion: 0.1.0
-    created: "2023-04-20T15:55:05.66481-05:00"
-    description: A helm chart for upstream knative-serving.
-    digest: ac3df45d8cf79c9a96f7e2fcd22a413400175d696ffafd51e8161bd94965d029
+    appVersion: v1.9.3
+    created: "2023-04-20T18:15:40.184792-05:00"
+    dependencies:
+      - condition: eventing.enabled
+        name: eventing
+        repository: ""
+        version: 0.2.1
+      - condition: eventing-sources.enabled
+        name: eventing-sources
+        repository: ""
+        version: 0.2.0
+      - condition: serving.enabled
+        name: serving
+        repository: ""
+        version: 1.9.3
+    description: Kubernetes-based platform to build, deploy, and manage modern serverless
+      workloads
+    digest: d401af076866a2466ec00ac8efcc3fa94801e147465cdd8ae2bd6949d0bb4811
     home: https://knative.dev/
     icon: https://raw.githubusercontent.com/knative/docs/master/docs/images/logo/rgb/knative-logo-rgb.jpg
-    kubeVersion: '>=1.23.0'
     maintainers:
+      - name: akirillov
       - name: adityajariwala
-    name: knative-serving
-    type: application
+    name: knative
     urls:
-      - https://adityajariwala.github.io/charts/staging/knative-serving-1.9.3.tgz
-    version: 1.9.3
-  knative:
+      - https://adityajariwala.github.io/charts/staging/knative-1.0.0.tgz
+    version: 1.0.0
   - apiVersion: v2
     appVersion: v1.10.0
     created: "2023-06-16T17:21:31.255323021Z"

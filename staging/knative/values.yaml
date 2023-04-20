@@ -2,10 +2,10 @@ global:
   serviceLabels: {}
 
 eventing:
-  enabled: true
+  enabled: false
 
 eventing-sources:
-  enabled: true
+  enabled: false
 
 serving:
   autoscaler:
