@@ -5,10 +5,6 @@
 # Internal address for the cluster's alertmanager.
 # alertmanagerAddress: "HOST:PORT"
 alertmanagerAddress: ""
-# Kommander service account used to delete the karma configmap
-kommanderServiceAccount: kommander-kubeaddons
-# Name of the karma configmap
-kommanderKarmaConfigMap: kommander-kubeaddons-config
 
 federate:
   addons: true
@@ -16,6 +12,14 @@ federate:
     name: kommander-system
 
 karma:
+  image:
+    # This image should be re-built and updated until the upstream karma version
+    # adds proxy support. The default value comes from `karma` chart version
+    # `1.4.1` that is included in `kommander-karma` subchart.
+    # See: https://jira.d2iq.com/browse/D2IQ-74658
+    repository: mesosphere/karma
+    tag: v0.55-d2iq-proxy
+
   service:
     labels:
       servicemonitor.kubeaddons.mesosphere.io/path: "kommander__monitoring__karma__metrics"
@@ -32,7 +36,7 @@ karma:
     hosts:
       - ""
 
-  livenessProbe:
+  readinessProbe:
     delay: 5
     period: 5
     path: /ops/portal/kommander/monitoring/karma/

@@ -1,0 +1,34 @@
+---
+# Enable custom lifecycle hooks for client, data and master pods
+
+client:
+  replicas: 1
+  hooks:
+    preStop: |-
+      #!/bin/bash
+      echo "Node {{ template "elasticsearch.client.fullname" . }} is shutting down"
+    postStart: |-
+      #!/bin/bash
+      echo "Node {{ template "elasticsearch.client.fullname" . }} is ready to be used"
+
+data:
+  replicas: 1
+  hooks:
+    drain:
+      enabled: false
+    preStop: |-
+      #!/bin/bash
+      echo "Node {{ template "elasticsearch.data.fullname" . }} is shutting down"
+    postStart: |-
+      #!/bin/bash
+      echo "Node {{ template "elasticsearch.data.fullname" . }} is ready to be used"
+
+master:
+  replicas: 2
+  hooks:
+    preStop: |-
+      #!/bin/bash
+      echo "Node {{ template "elasticsearch.master.fullname" . }} is shutting down"
+    postStart: |-
+      #!/bin/bash
+      echo "Node {{ template "elasticsearch.master.fullname" . }} is ready to be used"

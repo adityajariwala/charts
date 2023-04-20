@@ -12,8 +12,12 @@ spec:
   secretName: {{ include "kube-oidc-proxy.fullname" . }}-server-tls
   duration: 87600h
   issuerRef:
+  {{- if .Values.certIssuerRef }}
+    {{- toYaml .Values.certIssuerRef | nindent 4 }}
+  {{- else }}
     name: kubernetes-ca
     kind: ClusterIssuer
+  {{- end }}
   commonName: kube-oidc-proxy
 {{- if  (.Capabilities.APIVersions.Has "cert-manager.io/v1") }}
   subject:
@@ -24,6 +28,9 @@ spec:
     - D2iQ
 {{- end }}
   dnsNames:
-    - kube-oidc-proxy
-    - kube-oidc-proxy-kubeaddons.kubeaddons
-    - kube-oidc-proxy-kubeaddons.kubeaddons.svc.cluster.local
+    # names are the <name of the service>.<namespace>.svc.<domain> and
+    # shortened variations. However, there is no way to determine the domain,
+    # so we only include up to svc.
+    - {{ template "kube-oidc-proxy.fullname" . }}
+    - {{ template "kube-oidc-proxy.fullname" . }}.{{ .Release.Namespace }}
+    - {{ template "kube-oidc-proxy.fullname" . }}.{{ .Release.Namespace }}.svc

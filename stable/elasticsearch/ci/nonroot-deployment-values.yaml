@@ -1,0 +1,21 @@
+---
+# Deploy Chart as non-root and unprivileged
+
+client:
+  replicas: 1
+
+master:
+  replicas: 2
+
+data:
+  replicas: 1
+
+chownInitContainer:
+  enabled: false
+
+securityContext:
+  enabled: true
+  runAsUser: 1000
+
+sysctlInitContainer:
+  enabled: false

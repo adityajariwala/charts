@@ -1,6 +1,6 @@
 {{ $ns := .Release.Namespace }}
 {{ $labels := include "kommander-thanos.labels" . | indent 4  }}
-{{ $sa := .Values.kommanderServiceAccount }}
+{{ $sa := include "kommander-thanos.sa-name" . }}
 {{- if .Values.thanos.query.enabled }}
 {{- range .Values.thanos.query.serviceDiscoveryFileConfigMaps }}
 ---
@@ -24,7 +24,7 @@ spec:
       restartPolicy: OnFailure
       containers:
         - name: kubectl
-          image: bitnami/kubectl:1.16.2
+          image: bitnami/kubectl:1.19.7
           command:
           - sh
           - "-c"
@@ -66,12 +66,12 @@ spec:
       serviceAccountName: {{ $sa }}
       containers:
         - name: kubectl
-          image: bitnami/kubectl:1.16.2
+          image: bitnami/kubectl:1.19.7
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
             - -c
-            - kubectl delete configmap {{ . }}
+            - kubectl delete configmap --ignore-not-found {{ . }}
       restartPolicy: OnFailure
 {{- end }}
 {{- end }}

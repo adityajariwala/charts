@@ -6,9 +6,6 @@
 ##
 nameOverride: ""
 
-## Number of replicas by default
-replicas: 1
-
 ## Provide a name to substitute for the full names of resources
 ##
 fullnameOverride: ""
@@ -19,19 +16,23 @@ commonLabels: {}
 # scmhash: abc123
 # myLabel: aakkmd
 
-image:
-  # image.name is the name of the Gatekeeper container image.
-  name: quay.io/open-policy-agent/gatekeeper
-  # image.tag is the tag name of the Gatekeeper container image.
-  tag:
-  # image.pullPolicy specifies when to pull the image.
-  pullPolicy: IfNotPresent
+## Number of replicas by default
+replicas: 2
 
+auditInterval: 60
+constraintViolationsLimit: 20
+auditFromCache: false
+disableValidatingWebhook: false
+auditChunkSize: 0
+logLevel: INFO
+emitAdmissionEvents: false
+emitAuditEvents: false
 port: 8443
 
-securityContext: {}
-  # runAsUser: 65534
-  # fsGroup: 0
+image:
+  repository: openpolicyagent/gatekeeper
+  release: v3.4.0-rc.1
+  pullPolicy: IfNotPresent
 
 service:
   annotations: {}
@@ -42,32 +43,45 @@ service:
   #   type: NodePort
   #   nodePort: <port-number>
 
-rbac:
-  # Specifies whether RBAC resources should be created
-  create: true
-
-serviceAccount:
-  # Specifies whether a ServiceAccount should be created
-  create: true
-  # The name of the ServiceAccount to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name:
-
-priorityClassName:
-
-resources: {}
-  # limits:
-  #   cpu: 1
-  #   memory: 500Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 300Mi
-
-nodeSelector: {}
+nodeSelector:
+  kubernetes.io/os: linux
 
 tolerations: []
 
-affinity: {}
+
+podAnnotations:
+  container.seccomp.security.alpha.kubernetes.io/manager: runtime/default
+
+controllerManager:
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: gatekeeper.sh/operation
+              operator: In
+              values:
+              - webhook
+          topologyKey: kubernetes.io/hostname
+        weight: 100
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 256Mi
+
+audit:
+  affinity: {}
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 256Mi
 
 # To _fail closed_ on failures, change to Fail. During initial testing, we
 # recommend leaving the failure policy as Ignore.
@@ -75,8 +89,7 @@ admissionControllerFailurePolicy: Ignore
 
 # Adds a namespace selector to the admission controller webhook
 admissionControllerNamespaceSelector:
-  matchExpressions:
-  - {key: validation.gatekeeper.sh/disable-validation, operator: NotIn, values: ["true"]}
+  matchExpressions: []
 
 # Adds an object selector to the admission controller webhook
 admissionControllerObjectSelector:
@@ -90,19 +103,26 @@ webhook:
   # Setup the webhook using cert-manager
   certManager:
     enabled: false
-  # Webhook rules
-  rules:
-  - apiGroups:
-    - ""
-    apiVersions:
-    - "*"
-    operations:
-    - CREATE
-    - UPDATE
-    resources:
-    - pods
-    scope: Namespaced
-  # Webhook side effects
-  sideEffects: None
 
-kubectlImage: bitnami/kubectl:1.15
+kubectlImage: bitnami/kubectl:1.23.5
+
+# enable mutations
+mutations:
+  enable: false
+
+  # proxy settings
+  enablePodProxy: false
+
+  podProxySettings:
+    noProxy:
+    httpProxy:
+    httpsProxy:
+
+  # apply mutations on objects whose labels match namespace labels
+  namespaceSelectorForProxy: {}
+
+  # disable the following namespaces
+  excludeNamespacesFromProxy: []
+
+  # configure mutatingwebhookconfiguration sideEffects if necessary
+  sideEffects: ""

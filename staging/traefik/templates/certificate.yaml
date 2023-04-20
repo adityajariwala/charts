@@ -20,15 +20,14 @@ metadata:
     # https://github.com/helm/helm/issues/5482
     "helm.sh/hook-delete-policy": before-hook-creation
 spec:
-  {{- if .Values.initCertJobImage }}
-  secretName: {{ template "traefik.fullname" . }}-certificate-temporary
-  {{- else }}
-  # if we do not have a initCertJobImage set, we directly write the certificate
   secretName: {{ template "traefik.fullname" . }}-certificate
-  {{- end }}
   issuerRef:
+  {{- if .Values.certIssuerRef }}
+    {{- toYaml .Values.certIssuerRef | nindent 4 }}
+  {{- else }}
     name: kubernetes-ca
     kind: ClusterIssuer
+  {{- end }}
   # DCOS-60297 Update certificate to comply with Apple security requirements
   # https://support.apple.com/en-us/HT210176
   duration: 19200h   # 800 days

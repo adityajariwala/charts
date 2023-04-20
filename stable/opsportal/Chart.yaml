@@ -3,9 +3,10 @@ appVersion: 1.5.0
 home: https://github.com/mesosphere/charts
 description: OpsPortal Chart
 name: opsportal
-version: 0.3.23
+version: 0.9.5
 maintainers:
   - name: hectorj2f
   - name: alejandroEsc
   - name: jr0d
   - name: dkoshkin
+  - name: gracedo

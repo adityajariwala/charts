@@ -25,6 +25,9 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       serviceAccountName: {{ include "traefik-forward-auth.fullname" . }}
+      {{- if .Values.priorityClassName }}
+      priorityClassName: "{{ .Values.priorityClassName }}"
+      {{- end }}
 {{- if .Values.initContainers }}
       initContainers:
         {{- toYaml .Values.initContainers | nindent 8 }}
@@ -78,12 +81,14 @@ spec:
             {{- end }}
             - name: CONFIG
               value: "/etc/traefik-forward-auth/config/config.ini"
+            {{- if not .Values.traefikForwardAuth.useSystemCA }}
             - name: SSL_CERT_FILE
               {{- if or .Values.traefikForwardAuth.caCertificate .Values.traefikForwardAuth.caSecretName }}
               value: "/etc/traefik-forward-auth/ca/ca.crt"
               {{- else}}
               value: "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
               {{- end }}
+            {{- end }}
             - name: LOG_LEVEL
               value: "trace"
             - name: SERVICE_ACCOUNT_TOKEN_PATH
@@ -106,10 +111,15 @@ spec:
                 secretKeyRef:
                   name: {{ template "traefik-forward-auth.fullname" . }}-secret
                   key: secret
+            {{- if lt (.Values.image.tag | semver | (semver "3.0.0").Compare) 0 }}
+            - name: ENCRYPTION_KEY
+            {{- else }}
+            # Before v3 use SESSION_KEY
             - name: SESSION_KEY
+            {{- end }}
               valueFrom:
                 secretKeyRef:
-                  name: {{ template "traefik-forward-auth.fullname" . }}-secret
+                  name: {{ template "traefik-forward-auth.fullname" . }}-session-key
                   key: secret
             {{- if gt (len .Values.traefikForwardAuth.whitelist) 0 }}
             - name: WHITELIST
@@ -128,6 +138,14 @@ spec:
             {{- if gt (len .Values.traefikForwardAuth.rbacPassThroughPaths) 0 }}
             - name: AUTHZ_PASS_THROUGH
               value: {{ join "," .Values.traefikForwardAuth.rbacPassThroughPaths | quote }}
+            {{- end }}
+            {{- if .Values.clusterStorage.enabled }}
+            - name: ENABLE_IN_CLUSTER_STORAGE
+              value: "true"
+            - name: CLUSTER_STORE_CACHE_TTL
+              value: {{ .Values.clusterStorage.cacheTTL | quote }}
+            - name: CLUSTER_STORE_NAMESPACE
+              value: {{ .Values.clusterStorage.namespace | quote}}
             {{- end }}
           ports:
             - name: http

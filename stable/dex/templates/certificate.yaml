@@ -15,10 +15,14 @@ metadata:
     # https://github.com/helm/helm/issues/5482
     "helm.sh/hook-delete-policy": before-hook-creation
 spec:
-  secretName: dex
+  secretName: {{ template "dex.fullname" . }}-tls
   issuerRef:
+  {{- if .Values.certIssuerRef }}
+    {{- toYaml .Values.certIssuerRef | nindent 4 }}
+  {{- else }}
     name: kubernetes-ca
     kind: ClusterIssuer
+  {{- end }}
   # The use of the common name field has been deprecated since 2000 and is
   # discouraged from being used.
   commonName: dex
@@ -32,6 +36,9 @@ spec:
     - D2iQ
 {{- end }}
   dnsNames:
-    - dex-kubeaddons
-    - dex-kubeaddons.kubeaddons
-    - dex-kubeaddons.kubeaddons.svc.cluster.local
+    # names are the <name of the service>.<namespace>.svc.<domain> and
+    # shortened variations. However, there is no way to determine the domain,
+    # so we only include up to svc.
+    - {{ template "dex.fullname" . }}
+    - {{ template "dex.fullname" . }}.{{ .Release.Namespace }}
+    - {{ template "dex.fullname" . }}.{{ .Release.Namespace }}.svc

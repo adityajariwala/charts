@@ -6,8 +6,8 @@ replicaCount: 1
 
 image:
   repository: mesosphere/traefik-forward-auth
-  tag: 1.0.4
-  pullPolicy: Always
+  tag: 3.1.0
+  pullPolicy: IfNotPresent
 
 nameOverride: ""
 fullnameOverride: ""
@@ -41,6 +41,8 @@ traefikForwardAuth:
   #   ...
   #   -----END
   # or caSecretName: < name of the secret >
+  # To use system trusted CAs
+  # useSystemCA: true
   extraConfig: ""
   userCookieName: "_forward_auth_name"
   enableRBAC: false
@@ -60,6 +62,12 @@ ingress:
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
+
+
+clusterStorage:
+  enabled: false
+  cacheTTL: 60
+  namespace: ""
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -84,3 +92,7 @@ affinity: {}
 initContainers: []
 
 deploymentAnnotations: {}
+
+addonsInitializer: "mesosphere/kubeaddons-addon-initializer:v0.5.1"
+
+priorityClassName: ""

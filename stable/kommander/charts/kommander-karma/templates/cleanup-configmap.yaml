@@ -14,14 +14,14 @@ spec:
     metadata:
       name: karma-configmap-cleanup
     spec:
-      serviceAccountName: {{ .Values.kommanderServiceAccount }}
+      serviceAccountName: {{ template "kommander-karma.sa-name" . }}
       containers:
         - name: kubectl
-          image: bitnami/kubectl:1.16.2
+          image: bitnami/kubectl:1.19.7
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
             - -c
-            - kubectl delete configmap {{ .Values.kommanderKarmaConfigMap }}
+            - kubectl delete configmap --ignore-not-found {{ template "kommander-karma.configmap-name" . }}
       restartPolicy: OnFailure
 {{- end }}

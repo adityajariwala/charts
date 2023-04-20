@@ -1,6 +1,6 @@
 {{ $ns := .Release.Namespace }}
 {{ $labels := include "kommander.labels" . | indent 4  }}
-{{ $sa := include "kommander.fullname" . }}
+{{ $sa := include "kommander.sa-name" . }}
 {{- if index .Values "kubecost" "cost-analyzer" "thanos" "query" "enabled" }}
 {{- range index .Values "kubecost" "cost-analyzer" "thanos" "query" "serviceDiscoveryFileConfigMaps" }}
 ---
@@ -24,7 +24,7 @@ spec:
       restartPolicy: OnFailure
       containers:
         - name: kubectl
-          image: bitnami/kubectl:1.16.2
+          image: bitnami/kubectl:1.19.7
           command:
           - sh
           - "-c"
@@ -57,7 +57,7 @@ metadata:
   annotations:
     "helm.sh/hook": pre-delete
     "helm.sh/hook-weight": "5"
-    "helm.sh/hook-delete-policy": hook-succeeded
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
 spec:
   template:
     metadata:
@@ -66,12 +66,12 @@ spec:
       serviceAccountName: {{ $sa }}
       containers:
         - name: kubectl
-          image: bitnami/kubectl:1.16.2
+          image: bitnami/kubectl:1.19.7
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
             - -c
-            - kubectl delete configmap {{ . }}
+            - kubectl delete configmap --ignore-not-found {{ . }}
       restartPolicy: OnFailure
 {{- end }}
 {{- end }}

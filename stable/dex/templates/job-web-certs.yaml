@@ -8,10 +8,6 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  annotations:
-    "helm.sh/hook": post-install
-    "helm.sh/hook-weight": "1"
-    "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
   name: {{ $fullname  }}-web-certs
   labels:
 {{ include "dex.labels" . | indent 4 }}
@@ -29,6 +25,9 @@ spec:
 {{ toYaml .Values.certs.web.pod.annotations | trim | indent 8 }}
 {{- end }}
     spec:
+{{- if .Values.priorityClassName }}
+      priorityClassName: "{{ .Values.priorityClassName }}"
+{{- end }}
       {{- if .Values.certs.securityContext.enabled }}
       securityContext:
         runAsUser: {{ .Values.certs.securityContext.runAsUser }}

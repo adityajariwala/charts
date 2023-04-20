@@ -5,15 +5,17 @@
 
 source $(dirname "$0")/helpers.sh
 
-set -x
+set -xeuo pipefail
 
-cat << EOF >> "${BASEDIR}"/values.yaml
+SRCFILE="${BASEDIR}"/values.yaml
 
+sed -i '/# Create mesosphere specific resources/,$d' ${SRCFILE}
+
+cat << EOF >> ${SRCFILE}
 # Create mesosphere specific resources
 mesosphereResources:
   create: false
   rules:
-    etcd: true
     velero: false
   dashboards:
     autoscaler: true
@@ -30,16 +32,16 @@ mesosphereResources:
     name: "Kubernetes / Compute Resources / Cluster"
     cronJob:
       name: set-grafana-home-dashboard
-      image: dwdraju/alpine-curl-jq
+      image: apteno/alpine-jq:2021-01-19
   hooks:
     grafana:
-      image: dwdraju/alpine-curl-jq
+      image: apteno/alpine-jq:2021-01-19
       secretKeyRef: ops-portal-credentials
       # serviceURL is deprecated, do not use
       serviceURL: http://prometheus-kubeaddons-grafana.kubeaddons:3000
     prometheus:
       jobName: prom-get-cluster-id
-      kubectlImage: bitnami/kubectl:1.16.2
+      kubectlImage: bitnami/kubectl:1.19.7
       configmapName: cluster-info-configmap
   ingressRBAC:
     enabled: true
