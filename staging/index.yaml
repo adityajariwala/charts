@@ -2684,14 +2684,19 @@ entries:
   knative-serving:
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2023-04-11T16:40:09.93456-05:00"
-    description: A Helm chart for Kubernetes
-    digest: 1643e57a83b5f77bdbff8b4dafb52fea8644d48b1caf84a821c419a360e9f4b5
+    created: "2023-04-20T15:55:05.66481-05:00"
+    description: A helm chart for upstream knative-serving.
+    digest: ac3df45d8cf79c9a96f7e2fcd22a413400175d696ffafd51e8161bd94965d029
+    home: https://knative.dev/
+    icon: https://raw.githubusercontent.com/knative/docs/master/docs/images/logo/rgb/knative-logo-rgb.jpg
+    kubeVersion: '>=1.23.0'
+    maintainers:
+      - name: adityajariwala
     name: knative-serving
     type: application
     urls:
-      - https://adityajariwala.github.io/charts/staging/knative-serving-0.1.0.tgz
-    version: 0.1.0
+      - https://adityajariwala.github.io/charts/staging/knative-serving-1.9.3.tgz
+    version: 1.9.3
   knative:
   - apiVersion: v2
     appVersion: v1.10.0
