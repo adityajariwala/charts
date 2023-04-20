@@ -2683,8 +2683,8 @@ entries:
     version: 1.1.21
   knative:
   - apiVersion: v2
-    appVersion: v1.9.3
-    created: "2023-04-20T18:15:40.184792-05:00"
+    appVersion: v1.9.2
+    created: "2023-04-20T18:39:45.285341-05:00"
     dependencies:
       - condition: eventing.enabled
         name: eventing
@@ -2697,10 +2697,10 @@ entries:
       - condition: serving.enabled
         name: serving
         repository: ""
-        version: 1.9.3
+        version: 1.9.2
     description: Kubernetes-based platform to build, deploy, and manage modern serverless
       workloads
-    digest: d401af076866a2466ec00ac8efcc3fa94801e147465cdd8ae2bd6949d0bb4811
+    digest: b17f0aadb0eaaf3ee2d6a976dc08f68d2c1b4073eb20f9ea306db4f68b80ebc3
     home: https://knative.dev/
     icon: https://raw.githubusercontent.com/knative/docs/master/docs/images/logo/rgb/knative-logo-rgb.jpg
     maintainers:
@@ -2708,8 +2708,8 @@ entries:
       - name: adityajariwala
     name: knative
     urls:
-      - https://adityajariwala.github.io/charts/staging/knative-1.0.0.tgz
-    version: 1.0.0
+      - https://adityajariwala.github.io/charts/staging/knative-1.0.1.tgz
+    version: 1.0.1
   - apiVersion: v2
     appVersion: v1.10.0
     created: "2023-06-16T17:21:31.255323021Z"
