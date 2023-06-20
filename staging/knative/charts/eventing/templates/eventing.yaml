@@ -850,7 +850,7 @@ spec:
       containers:
         - name: eventing-controller
           terminationMessagePolicy: FallbackToLogsOnError
-          image: gcr.io/knative-releases/knative.dev/eventing/cmd/controller@sha256:92967bab4ad8f7d55ce3a77ba8868f3f2ce173c010958c28b9a690964ad6ee9b
+          image: gcr.io/knative-releases/knative.dev/eventing/cmd/controller:v1.10.1
           resources:
             requests:
               cpu: 100m
@@ -868,7 +868,7 @@ spec:
               value: knative.dev/eventing
             # APIServerSource
             - name: APISERVER_RA_IMAGE
-              value: gcr.io/knative-releases/knative.dev/eventing/cmd/apiserver_receive_adapter@sha256:828db8155996e40c13b77c1d039dba98153dcfcbe272248e92866bd7b6d6a17d
+              value: gcr.io/knative-releases/knative.dev/eventing/cmd/apiserver_receive_adapter:v1.10.1
             - name: POD_NAME
               valueFrom:
                 fieldRef:
@@ -966,7 +966,7 @@ spec:
       enableServiceLinks: false
       containers:
         - name: dispatcher
-          image: gcr.io/knative-releases/knative.dev/eventing/cmd/mtping@sha256:6d35cc98baa098fc0c5b4290859e363a8350a9dadc31d1191b0b5c9796958223
+          image: gcr.io/knative-releases/knative.dev/eventing/cmd/mtping:v1.10.1
           env:
             - name: SYSTEM_NAMESPACE
               value: ''
@@ -1127,7 +1127,7 @@ spec:
           terminationMessagePolicy: FallbackToLogsOnError
           # This is the Go import path for the binary that is containerized
           # and substituted here.
-          image: gcr.io/knative-releases/knative.dev/eventing/cmd/webhook@sha256:ebf93652f0254ac56600bedf4a7d81611b3e1e7f6526c6998da5dd24cdc67ee1
+          image: gcr.io/knative-releases/knative.dev/eventing/cmd/webhook:v1.10.1
           resources:
             requests:
               # taken from serving.
@@ -4909,7 +4909,7 @@ spec:
       containers:
         - name: filter
           terminationMessagePolicy: FallbackToLogsOnError
-          image: gcr.io/knative-releases/knative.dev/eventing/cmd/broker/filter@sha256:29bd9f43359153c0ea39cf382d5f25ca43f55abbbce3d802ca37cc4d5c4a6942
+          image: gcr.io/knative-releases/knative.dev/eventing/cmd/broker/filter:v1.10.1
           readinessProbe: &probe
             failureThreshold: 3
             httpGet:
@@ -5033,7 +5033,7 @@ spec:
       containers:
         - name: ingress
           terminationMessagePolicy: FallbackToLogsOnError
-          image: gcr.io/knative-releases/knative.dev/eventing/cmd/broker/ingress@sha256:7f3b05f6e0abae19e9438fac44dd9938ddd2293014ef0fb8d388450c9ff63000
+          image: gcr.io/knative-releases/knative.dev/eventing/cmd/broker/ingress:v1.10.1
           readinessProbe: &probe
             failureThreshold: 3
             httpGet:
@@ -5167,7 +5167,7 @@ spec:
       containers:
         - name: mt-broker-controller
           terminationMessagePolicy: FallbackToLogsOnError
-          image: gcr.io/knative-releases/knative.dev/eventing/cmd/mtchannel_broker@sha256:4040ffc2d34e950b7969b4ba90cec29e65e506126ddb195faf3a56cb2fa653e8
+          image: gcr.io/knative-releases/knative.dev/eventing/cmd/mtchannel_broker:v1.10.1
           resources:
             requests:
               cpu: 100m
@@ -5591,7 +5591,7 @@ spec:
       enableServiceLinks: false
       containers:
         - name: controller
-          image: gcr.io/knative-releases/knative.dev/eventing/cmd/in_memory/channel_controller@sha256:e004174a896811aec46520b1f2857f1973762389426bb0e0fc5d2332d5e36c7a
+          image: gcr.io/knative-releases/knative.dev/eventing/cmd/in_memory/channel_controller:v1.10.1
           env:
             - name: WEBHOOK_NAME
               value: inmemorychannel-webhook
@@ -5608,7 +5608,7 @@ spec:
                 fieldRef:
                   fieldPath: metadata.namespace
             - name: DISPATCHER_IMAGE
-              value: gcr.io/knative-releases/knative.dev/eventing/cmd/in_memory/channel_dispatcher@sha256:521234b4cff9d3cd32f8264cd7c830caa06f9982637b4866e983591fa1abc418
+              value: gcr.io/knative-releases/knative.dev/eventing/cmd/in_memory/channel_dispatcher:v1.10.1
             - name: POD_NAME
               valueFrom:
                 fieldRef:
@@ -5756,7 +5756,7 @@ spec:
       enableServiceLinks: false
       containers:
         - name: dispatcher
-          image: gcr.io/knative-releases/knative.dev/eventing/cmd/in_memory/channel_dispatcher@sha256:521234b4cff9d3cd32f8264cd7c830caa06f9982637b4866e983591fa1abc418
+          image: gcr.io/knative-releases/knative.dev/eventing/cmd/in_memory/channel_dispatcher:v1.10.1
           readinessProbe: &probe
             failureThreshold: 3
             httpGet:

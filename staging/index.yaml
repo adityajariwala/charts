@@ -2684,7 +2684,7 @@ entries:
   knative:
   - apiVersion: v2
     appVersion: v1.10.2
-    created: "2023-06-20T15:08:12.777108-05:00"
+    created: "2023-06-20T15:45:47.639271-05:00"
     dependencies:
       - condition: eventing.enabled
         name: eventing
@@ -2696,7 +2696,7 @@ entries:
         version: 1.10.3
     description: Kubernetes-based platform to build, deploy, and manage modern serverless
       workloads
-    digest: 04ce3f83c470da6b6320a48c8c1702729106cbec60a18ea3117647cd779ddb6c
+    digest: 31d0ecdfb9dc10425bf9271a7355f5adc21e6b1aac0f5c0ebf2c86062205e90b
     home: https://knative.dev/
     icon: https://raw.githubusercontent.com/knative/docs/master/docs/images/logo/rgb/knative-logo-rgb.jpg
     maintainers:
