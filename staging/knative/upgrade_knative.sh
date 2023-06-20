@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-# This script upgrades knative by copying all the latest upstream helm files.
+# This script upgrades knative by copying all the latest github release files.
 #
-# It then applies all the needed mesosphere changes from the /patch folder.
+# It then applies all the needed mesosphere changes
 #
 # To upgrade, simply run:
 #   ./upgrade_knative.sh
@@ -10,61 +10,55 @@
 set -xeuo pipefail
 shopt -s dotglob
 
-BASEDIR=$(dirname "$(realpath "$0")")
-UPSTREAM_REPO=git@github.com:istio/istio.git
-ISTIO_PATH=manifests/charts/istio-operator
-ISTIO_DASHBOARDS_PATH=manifests/addons/dashboards
-FORK_DASHBOARDS_PATH=charts/grafana/dashboards
-ISTIO_TAG=1.17.2
-TMPDIR=$(mktemp -d)
-STARTING_REV=$(git rev-parse HEAD)
-export STARTING_REV
-trap 'rollback' ERR
+# Tags for current version of knative
+SERVING_TAG=1.10.2
+EVENTING_TAG=1.10.1
 
-rollback() {
-    set +x
-    echo "ERROR running upgrades. Rolling back."
-    cd "${BASEDIR}"
-    git reset --hard "${STARTING_REV}"
-    exit 1
-}
+# Two basic patches needed for helm linter
+PATCH_1=$'# eg. \'{{.Name}}-{{.Namespace}}.{{ index .Annotations "sub"}}.{{.Domain}}\''
+PATCH_1_FIX=$'# eg. \'{{ `{{.Name}}-{{.Namespace}}.{{ index .Annotations "sub"}}.{{.Domain}}` }}\''
 
-cd "${TMPDIR}" || exit
+PATCH_2=$'logging.request-log-template: \'{"httpRequest": {"requestMethod": "{{.Request.Method}}", "requestUrl": "{{js .Request.RequestURI}}", "requestSize": "{{.Request.ContentLength}}", "status": {{.Response.Code}}, "responseSize": "{{.Response.Size}}", "userAgent": "{{js .Request.UserAgent}}", "remoteIp": "{{js .Request.RemoteAddr}}", "serverIp": "{{.Revision.PodIP}}", "referer": "{{js .Request.Referer}}", "latency": "{{.Response.Latency}}s", "protocol": "{{.Request.Proto}}"}, "traceId": "{{index .Request.Header "X-B3-Traceid"}}"}\''
+PATCH_2_FIX=$'logging.request-log-template: \'{"httpRequest": {"requestMethod": "{{ `{{.Request.Method}}", "requestUrl": "{{js .Request.RequestURI}}", "requestSize": "{{.Request.ContentLength}}", "status": {{.Response.Code}}, "responseSize": "{{.Response.Size}}", "userAgent": "{{js .Request.UserAgent}}", "remoteIp": "{{js .Request.RemoteAddr}}", "serverIp": "{{.Revision.PodIP}}", "referer": "{{js .Request.Referer}}", "latency": "{{.Response.Latency}}s", "protocol": "{{.Request.Proto}}"}, "traceId": "{{index .Request.Header "X-B3-Traceid"}}` }}"}\''
 
-git init
-git remote add origin -f ${UPSTREAM_REPO}
-git config core.sparsecheckout true
+# Base URLs
+SERVING_URL=https://github.com/knative/serving/releases/download/knative-v${SERVING_TAG}
+EVENTING_URL=https://github.com/knative/eventing/releases/download/knative-v${EVENTING_TAG}
 
-echo ${ISTIO_PATH} > .git/info/sparse-checkout
-echo ${ISTIO_DASHBOARDS_PATH} >> .git/info/sparse-checkout
+# Get all files, auto-apply PodDisruptionBudget patches
+curl -sSL ${SERVING_URL}/serving-crds.yaml > charts/serving/crds/serving-crds.yaml
+curl -sSL ${SERVING_URL}/serving-core.yaml | sed -e 's/minAvailable: 80%/maxUnavailable: 1/g' > charts/serving/templates/serving-core-1.yaml
+curl -sSL ${SERVING_URL}/serving-hpa.yaml > charts/serving/templates/serving-hpa-temp.yaml
 
-git fetch origin ${ISTIO_TAG}
-git checkout ${ISTIO_TAG}
+curl -sSL ${EVENTING_URL}/eventing-crds.yaml > charts/eventing/crds/eventing-crds.yaml
+curl -sSL ${EVENTING_URL}/eventing.yaml | sed -e 's/minAvailable: 80%/maxUnavailable: 1/g' > charts/eventing/templates/eventing-temp.yaml
 
-cd ${ISTIO_PATH} || exit
+# Apply patches to fix helm linter
+sed "s/${PATCH_1}/${PATCH_1_FIX}/g" charts/serving/templates/serving-core-1.yaml | sed -e "s/${PATCH_2}/${PATCH_2_FIX}/g" > charts/serving/templates/serving-core-temp.yaml
 
-for f in *; do
-  rm -rf "${BASEDIR:?}"/"${f}"
-  cp -R "$f" "${BASEDIR}"
-done
+# Apply airgapped image patches
+sed "s/@sha256.*/:v${SERVING_TAG}/g" charts/serving/templates/serving-core-temp.yaml > charts/serving/templates/serving-core.yaml
+sed "s/@sha256.*/:v${SERVING_TAG}/g" charts/serving/templates/serving-hpa-temp.yaml > charts/serving/templates/serving-hpa.yaml
+sed "s/@sha256.*/:v${EVENTING_TAG}/g" charts/eventing/templates/eventing-temp.yaml > charts/eventing/templates/eventing.yaml
 
-cd "${BASEDIR}" || exit
+# Remove junk files
+rm charts/serving/templates/serving-core-1.yaml
+rm charts/serving/templates/serving-core-temp.yaml
+rm charts/serving/templates/serving-hpa-temp.yaml
+rm charts/eventing/templates/eventing-temp.yaml
 
-git add .
-git commit -am "chore: copy upstream chart ${ISTIO_TAG}"
+# Bump app version
+sed "s/appVersion:.*/appVersion: \"v${SERVING_TAG}\"/g" Chart.yaml > Chart.yaml.temp
+sed "s/appVersion:.*/appVersion: \"v${SERVING_TAG}\"/g" charts/serving/Chart.yaml > charts/serving/Chart.yaml.temp
+sed "s/appVersion:.*/appVersion: \"v${EVENTING_TAG}\"/g" charts/eventing/Chart.yaml > charts/eventing/Chart.yaml.temp
+mv Chart.yaml.temp Chart.yaml
+mv charts/serving/Chart.yaml.temp charts/serving/Chart.yaml
+mv charts/eventing/Chart.yaml.temp charts/eventing/Chart.yaml
 
-cd "${TMPDIR}/${ISTIO_DASHBOARDS_PATH}" || exit
+# Commit changes
+ git add .
+ git commit -am "chore: bump Knative Serving to \"v${SERVING_TAG}\""
 
-for f in *; do
-  rm -rf "${BASEDIR:?}"/${FORK_DASHBOARDS_PATH}"/${f}"
-  cp -R "$f" "${BASEDIR}/${FORK_DASHBOARDS_PATH}"
-done
-
-cd "${BASEDIR}" || exit
-
-git add .
-git diff-index --quiet HEAD || git commit -am "chore: copy upstream chart grafana dashboards ${ISTIO_TAG}"
-
-BASEDIR=${BASEDIR} ISTIO_TAG=${ISTIO_TAG} ./patch/patch.sh
-
-echo "Done upgrading istio!"
+# Finish
+echo "Done upgrading knative!"
+echo "Please remember to bump version numbers in Chart and sub-Charts manually"
